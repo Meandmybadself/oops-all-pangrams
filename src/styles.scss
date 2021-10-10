@@ -1,0 +1,151 @@
+@use "sass:math";
+
+.noselect {
+    user-select: none;
+}
+
+html,
+body {
+    font-family: "HelveticaNeue", "Helvetica Neue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#header {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kv {
+    font-size: 12px;
+    label {
+        font-weight: bold;
+        margin-right: 3px;
+    }
+    span {
+        font-size: 12px;
+    }
+}
+
+#word {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 20px;
+    min-height: 24px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 50px;
+}
+
+#letters {
+    position: relative;
+    height: 175px;
+    width: 175px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.letterButton {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    &:hover {
+        svg {
+            path {
+                fill: #00c1f6;
+            }
+        }
+    }
+
+    $distance: 47px;
+    @mixin position($angle, $distance) {
+        $x: math.round($distance * math.cos($angle));
+        $y: math.round($distance * math.sin($angle));
+        transform: translate($x, $y);
+    }
+
+    @for $i from 2 through 7 {
+        &:nth-child(#{$i}) {
+            @include position((60deg * $i) + 30deg, $distance);
+        }
+    }
+
+    .letter {
+        position: absolute;
+        @extend .noselect;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: "HelveticaNeue", "Helvetica Neue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
+        &.hidden {
+            opacity: 0;
+        }
+    }
+    svg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 0;
+        fill: #e5e5e4;
+        path {
+            transition: fill 0.3s ease-out;
+        }
+    }
+}
+
+ul#actions {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .action {
+        @extend .noselect;
+        border: 1px solid #d7d7d7;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        color: #222;
+        cursor: pointer;
+        transition: background 0.3s ease-out;
+        &:hover {
+            background: #f5f5f5;
+        }
+        &:not(&:last-child) {
+            margin-right: 10px;
+        }
+    }
+}
