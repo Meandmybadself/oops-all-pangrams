@@ -3,6 +3,10 @@
 ## 00 - Curation
 Find some wordlists, pull the eligible words.
 
+## TODOs
+* Add Pangram notification
+* Tell user word on skip
+
 ### URLs
 
 * https://github.com/xajkep/wordlists
