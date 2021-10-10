@@ -10,6 +10,8 @@ export default () => {
     const [randomWordLetters, setRandomWordLetters] = useState([]);
     const [skips, setSkips] = useState(3);
 
+    console.log(word)
+
     const shuffleLetters = useCallback(() => {
         document.querySelectorAll('.letter').forEach(letter => letter.classList.add('hidden'))
         setTimeout(() => {
