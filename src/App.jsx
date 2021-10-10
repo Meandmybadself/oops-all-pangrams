@@ -34,7 +34,7 @@ export default () => {
         } else {
             window.alert('Not in word list')
         }
-    }, [round, word])
+    }, [round, word, inputWord])
 
     useEffect(() => {
         if (shuffledWords?.length) {

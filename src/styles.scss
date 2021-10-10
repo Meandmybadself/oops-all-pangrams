@@ -57,6 +57,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     margin-top: 50px;
+    margin-bottom: 10px;
 }
 
 #letters {
@@ -70,8 +71,9 @@ body {
 
 .letterButton {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    $size: 60px;
+    width: $size;
+    height: $size;
     cursor: pointer;
     @extend .noselect;
     &:hover {
@@ -82,7 +84,7 @@ body {
         }
     }
 
-    $distance: 47px;
+    $distance: $size - 3;
     @mixin position($angle, $distance) {
         $x: math.round($distance * math.cos($angle));
         $y: math.round($distance * math.sin($angle));
