@@ -1,18 +1,18 @@
 # Oops, All Pangrams
 
-## 00 - Curation
-Find some wordlists, pull the eligible words.
+## Overview
+A modification of [New York Times' Spelling Bee](https://www.nytimes.com/puzzles/spelling-bee), only allowing pangrams to be entered.
+
+## Impetus
+https://twitter.com/meandmybadself/status/1437758991283724294
+
+## Word Curation
+1. Find some wordlists.
+2. Split them down to their unique letters.
+3. Keep the words that have 7 unique letters.
+4. Dedupe.
+5. Save somewhere.
 
 ## TODOs
-* Add Pangram notification
-* Tell user word on skip
-
-### URLs
-
-* https://github.com/xajkep/wordlists
-* https://github.com/openethereum/wordlist/blob/master/res/wordlist.txt
-* https://github.com/dolph/dictionary
-* https://github.com/gmelodie/awesome-wordlists
-* https://github.com/imsky/wordlists
-* https://github.com/dwyl/english-words
-
+* Instructions
+* UI update

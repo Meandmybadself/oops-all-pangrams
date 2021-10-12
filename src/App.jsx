@@ -55,6 +55,7 @@ export default () => {
 
     const end = () => {
         window.alert('Not done yet.')
+        location.reload()
     }
 
     const showMessage = (message, type, ttl = 3000) => {
