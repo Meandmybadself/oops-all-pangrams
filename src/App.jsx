@@ -12,6 +12,7 @@ export default () => {
     const [skips, setSkips] = useState(3);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
+    const [selectedLetters, setSelectedLetters] = useState([]);
 
     const shuffleLetters = useCallback(() => {
         document.querySelectorAll('.letter').forEach(letter => letter.classList.add('hidden'))
@@ -27,6 +28,10 @@ export default () => {
         setInputWord('')
     }, [skips, word])
 
+    useEffect(() => {
+        setSelectedLetters(inputWord.split(''))
+    }, [inputWord])
+
     const checkWord = useCallback(() => {
         let correct = false
         if (word === inputWord) {
@@ -41,14 +46,16 @@ export default () => {
             showMessage('Pangram!', 'blue')
         } else {
             showMessage('Not in word list.')
+            setTimeout(() => {
+                setInputWord('')
+            }, 1000)
+
         }
     }, [round, word, inputWord])
 
-    // useEffect(() => {
-    //     setMessage('Pangram!')
-    //     setMessageType('blue')
-    // }, [])
-
+    const end = () => {
+        window.alert('Not done yet.')
+    }
 
     const showMessage = (message, type, ttl = 3000) => {
         setMessage(message)
@@ -97,13 +104,15 @@ export default () => {
             </div>
             <div id='inputWord'>{inputWord}</div>
             <div id='letters'>
-                {randomWordLetters.map((letter, index) => <Letter key={index} letter={letter} onClick={() => setInputWord(inputWord + letter)} />)}
+                {randomWordLetters.map((letter, index) => <Letter key={index} letter={letter} selectedLetters={selectedLetters} onClick={() => setInputWord(inputWord + letter)} />)}
             </div>
             <ul id='actions'>
                 <li className={cn('action', 'action--delete', { 'action--disabled': !inputWord?.length })} onClick={() => setInputWord(inputWord.slice(0, -1))}>Delete</li>
                 <li className={cn('action', 'action--shuffle')} onClick={() => shuffleLetters()}>Shuffle</li>
-                <li className={cn('action', 'action--skip', { 'action--disabled': skips <= 0 })} onClick={() => skip()}>Skip</li>
-                <li className={cn('action', 'action--enter', { 'action--disabled': !inputWord?.length === 7 })} onClick={() => checkWord()}>Enter</li>
+
+                {!!skips && <li className={cn('action', 'action--skip')} onClick={() => skip()}>Skip</li>}
+                {!skips && <li className={cn('action', 'action--skip')} onClick={() => end()}>End</li>}
+                <li className={cn('action', 'action--enter', { 'action--disabled': selectedLetters.length < 7 })} onClick={() => checkWord()}>Enter</li>
             </ul>
 
             <footer>
@@ -115,8 +124,8 @@ export default () => {
         </Fragment>);
 }
 
-const Letter = ({ letter, onClick }) => (
-    <div className='letterButton' onClick={onClick}>
+const Letter = ({ letter, onClick, selectedLetters }) => (
+    <div className={cn('letterButton', { 'letterButton--selected': selectedLetters.includes(letter) })} onClick={onClick}>
         <div className="letter">
             <span>{letter}</span>
         </div>

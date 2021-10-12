@@ -138,6 +138,7 @@ footer {
     height: $size;
     cursor: pointer;
     @extend .noselect;
+    &--selected,
     &:hover {
         svg {
             path {
@@ -214,10 +215,14 @@ ul#actions {
         color: #222;
         cursor: pointer;
         transition: background 0.3s ease-out, border 0.3s ease-out;
+        text-align: center;
         &--disabled {
             color: #eee;
             border: 1px solid #eee;
             pointer-events: none;
+        }
+        &--skip {
+            width: 25px;
         }
         &:hover {
             background: #f5f5f5;
