@@ -13,13 +13,14 @@ export default () => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const [selectedLetters, setSelectedLetters] = useState([]);
+    const [showEndOfGame, setShowEndOfGame] = useState(false);
 
     const shuffleLetters = useCallback(() => {
         document.querySelectorAll('.letter').forEach(letter => letter.classList.add('hidden'))
         setTimeout(() => {
             setRandomWordLetters(shuffle(uniq(word.split(''))))
             document.querySelectorAll('.letter').forEach(letter => letter.classList.remove('hidden'))
-        }, 300)
+        }, 200)
     }, [word])
 
     const skip = useCallback(() => {
@@ -54,8 +55,14 @@ export default () => {
     }, [round, word, inputWord])
 
     const end = () => {
-        window.alert('Not done yet.')
-        location.reload()
+        setShowEndOfGame(true)
+    }
+
+    const retry = () => {
+        setShowEndOfGame(false)
+        setSkips(3)
+        setRound(0)
+        setInputWord('')
     }
 
     const showMessage = (message, type, ttl = 3000) => {
@@ -100,6 +107,13 @@ export default () => {
                 </div>
 
             </header>
+            {showEndOfGame && (<div id='endGame'>
+                <div id='title'>Game Over</div>
+                <p>Your score was:</p>
+                <div id='score'>{round}</div>
+                <div id='try-again' onClick={() => retry()}>Try again</div>
+            </div>)}
+
             <div id='messageHolder'>
                 {message && <div className={cn('message', { [`message--${messageType}`]: messageType })}>{message}</div>}
             </div>
