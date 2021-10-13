@@ -10,8 +10,7 @@ const isEligibleWord = (word) =>
 
 const getWordLetters = word => uniq(word.split(''))
 
-const wordLists = glob.sync('./input/*.txt').map(fileName => {
-    console.log('fileName', fileName)
+const wordLists = glob.sync('./00-curation/input/*.txt').map(fileName => {
     return fs.readFileSync(fileName, 'utf8')
         .split('\n')
         .filter(isEligibleWord)
@@ -19,4 +18,4 @@ const wordLists = glob.sync('./input/*.txt').map(fileName => {
 
 const combined = [...new Set([].concat(...wordLists))].sort()
 
-fs.writeFileSync('../01-build/words.json', JSON.stringify(combined))
+fs.writeFileSync('./src/words.js', `export default ` + JSON.stringify(combined))
