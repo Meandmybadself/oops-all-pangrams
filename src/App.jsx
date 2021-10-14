@@ -2,6 +2,7 @@ import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import words from './words';
 import { shuffle, uniq } from 'lodash'
 import cn from 'classnames';
+import Cookies from 'js-cookie';
 
 export default () => {
     const [inputWord, setInputWord] = useState('');
@@ -14,6 +15,7 @@ export default () => {
     const [messageType, setMessageType] = useState();
     const [selectedLetters, setSelectedLetters] = useState([]);
     const [showEndOfGame, setShowEndOfGame] = useState(false);
+    const [showInstructions, setShowInstructions] = useState(!Cookies.get('instructions'));
 
     const shuffleLetters = useCallback(() => {
         document.querySelectorAll('.letter').forEach(letter => letter.classList.add('hidden'))
@@ -91,27 +93,43 @@ export default () => {
     return (
         <Fragment>
 
-            <header>
-                <div id='title'>
-                    Oops, All Pangrams!
-                </div>
-                <div className='row'>
-                    <div className='kv'>
-                        <label>Score:</label>
-                        <span>{round}</span>
+            {!showInstructions && (
+                <header>
+                    <div id='title'>
+                        Oops, All Pangrams!
                     </div>
-                    <div className='kv'>
-                        <label>Skips:</label>
-                        <span>{skips}</span>
-                    </div>
-                </div>
 
-            </header>
-            {showEndOfGame && (<div id='endGame'>
+                    <div className='row'>
+                        <div className='kv'>
+                            <label>Score:</label>
+                            <span>{round}</span>
+                        </div>
+                        <div className='kv'>
+                            <label>Skips:</label>
+                            <span>{skips}</span>
+                        </div>
+                    </div>
+                </header>
+            )}
+
+            {showInstructions && <div className='overlay overlay--instructions'>
+                <div>
+                    <h1>Oops, All Pangrams!</h1>
+                    <h2>Objective</h2>
+                    <p>Use all the letters in the grid to spell a word.</p>
+                    <p>If you can't guess, tap <b>Skip</b>.</p>
+                    <p>After three Skips, the game is over.</p>
+                    <div className={'button'} onClick={() => {
+                        Cookies.set('instructions', 'true')
+                        setShowInstructions(false)
+                    }}>Start game</div>
+                </div>
+            </div>}
+            {showEndOfGame && (<div id='overlay overlay--endGame'>
                 <div id='title'>Game Over</div>
                 <p>Your score was:</p>
                 <div id='score'>{round}</div>
-                <div id='try-again' onClick={() => retry()}>Try again</div>
+                <div className='button' id='try-again' onClick={() => retry()}>Try again</div>
             </div>)}
 
             <div id='messageHolder'>
@@ -121,18 +139,18 @@ export default () => {
             <div id='letters'>
                 {randomWordLetters.map((letter, index) => <Letter key={index} letter={letter} selectedLetters={selectedLetters} onClick={() => setInputWord(inputWord + letter)} />)}
             </div>
-            <ul id='actions'>
-                <li className={cn('action', 'action--delete', { 'action--disabled': !inputWord?.length })} onClick={() => setInputWord(inputWord.slice(0, -1))}>Delete</li>
-                <li className={cn('action', 'action--shuffle')} onClick={() => shuffleLetters()}>Shuffle</li>
-
-                {!!skips && <li className={cn('action', 'action--skip')} onClick={() => skip()}>Skip</li>}
-                {!skips && <li className={cn('action', 'action--skip')} onClick={() => end()}>End</li>}
-                <li className={cn('action', 'action--enter', { 'action--disabled': selectedLetters.length < 7 })} onClick={() => checkWord()}>Enter</li>
-            </ul>
+            <div id='actions'>
+                <div className={cn('button', 'action', 'action--delete', { 'disabled': !inputWord?.length })} onClick={() => setInputWord(inputWord.slice(0, -1))}>Delete</div>
+                <div className={cn('button', 'action', 'action--shuffle')} onClick={() => shuffleLetters()}>Shuffle</div>
+                {!!skips && <div className={cn('button', 'action', 'action--skip')} onClick={() => skip()}>Skip</div>}
+                {!skips && <div className={cn('button', 'action', 'action--skip')} onClick={() => end()}>End</div>}
+                <div className={cn('button', 'action', 'action--enter', { 'disabled': selectedLetters.length < 7 })} onClick={() => checkWord()}>Enter</div>
+            </div>
 
             <footer>
                 <ul>
                     <li><a href='mailto:me@meandmybadself.com'>Contact</a></li>
+                    <li><a href='#' onClick={() => setShowInstructions(true)}>Instructions</a></li>
                     <li><a href='https://github.com/meandmybadself/oops-all-pangrams'>Source</a></li>
                 </ul>
             </footer>

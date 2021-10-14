@@ -6,6 +6,11 @@ $letterSize: 24px;
     user-select: none;
 }
 
+@mixin w() {
+    max-width: 400px;
+    min-width: 300px;
+}
+
 html,
 body {
     width: 100%;
@@ -49,8 +54,7 @@ div.message {
 
 header,
 footer {
-    max-width: 400px;
-    min-width: 300px;
+    @include w();
 }
 
 header {
@@ -85,7 +89,7 @@ footer {
         border-top: 1px solid #ddd;
         margin-top: 10px;
         padding-top: 10px;
-        width: 200px;
+        width: 100%;
         justify-content: space-between;
         font-size: 10px;
         a,
@@ -193,9 +197,31 @@ footer {
     }
 }
 
-ul#actions {
+.button {
+    border: none;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: #222;
+    cursor: pointer;
+    transition: background 0.3s ease-out, border 0.3s ease-out;
+    text-align: center;
+    border: 1px solid #d7d7d7;
+    &.disabled {
+        color: #eee;
+        border: 1px solid #eee;
+        pointer-events: none;
+    }
+    &:hover {
+        background: #f5f5f5;
+    }
+}
+
+div#actions {
+    @include w();
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     @extend .noselect;
     .action:focus {
@@ -206,64 +232,48 @@ ul#actions {
         color: #222;
         cursor: pointer;
     }
-    .action {
-        @extend .noselect;
-        border: 1px solid #d7d7d7;
-        font-size: 13px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        color: #222;
-        cursor: pointer;
-        transition: background 0.3s ease-out, border 0.3s ease-out;
-        text-align: center;
-        &--disabled {
-            color: #eee;
-            border: 1px solid #eee;
-            pointer-events: none;
-        }
-        &--skip {
-            width: 25px;
-        }
-        &:hover {
-            background: #f5f5f5;
-        }
-        &:not(&:last-child) {
-            margin-right: 10px;
-        }
-    }
 }
 
-#endGame {
+.overlay {
     position: absolute;
     z-index: 2;
     left: 0;
     right: 0;
     bottom: 0;
     top: 50px;
-    background: #222;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #eee;
+
     #title {
         font-size: 1.5em;
         font-weight: bold;
     }
-    #score {
-        font-size: 3.5em;
-        font-weight: bold;
-        margin-top: 0;
+    &--instructions {
+        background: #fff;
+        div {
+            max-width: 500px;
+            min-width: 300px;
+        }
+        .button {
+            margin-top: 30px;
+        }
     }
-    #try-again {
-        margin-top: 20px;
-        background-color: #eee;
-        font-size: 13px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        color: #222;
-        cursor: pointer;
-        transition: background 0.3s ease-out, border 0.3s ease-out;
-        text-align: center;
+
+    &--endGame {
+        background: #222;
+        color: #eee;
+
+        #score {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-top: 0;
+        }
+        #try-again {
+            margin-top: 20px;
+            background-color: #eee;
+            color: #222;
+        }
     }
 }
