@@ -69,6 +69,36 @@ header {
     #title {
         font-weight: bold;
     }
+    #score {
+        position: relative;
+        $s: 25px;
+        width: $s;
+        height: $s;
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: $s;
+            height: $s;
+            z-index: 0;
+        }
+        div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    }
 }
 ul {
     list-style: none;
@@ -273,7 +303,6 @@ div#actions {
         #try-again {
             margin-top: 20px;
             background-color: #eee;
-            color: #222;
         }
     }
 }

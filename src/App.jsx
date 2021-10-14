@@ -18,11 +18,7 @@ export default () => {
     const [showInstructions, setShowInstructions] = useState(!Cookies.get('instructions'));
 
     const shuffleLetters = useCallback(() => {
-        document.querySelectorAll('.letter').forEach(letter => letter.classList.add('hidden'))
-        setTimeout(() => {
-            setRandomWordLetters(shuffle(uniq(word.split(''))))
-            document.querySelectorAll('.letter').forEach(letter => letter.classList.remove('hidden'))
-        }, 200)
+        setRandomWordLetters(shuffle(uniq(word.split(''))))
     }, [word])
 
     const skip = useCallback(() => {
@@ -99,15 +95,9 @@ export default () => {
                         Oops, All Pangrams!
                     </div>
 
-                    <div className='row'>
-                        <div className='kv'>
-                            <label>Score:</label>
-                            <span>{round}</span>
-                        </div>
-                        <div className='kv'>
-                            <label>Skips:</label>
-                            <span>{skips}</span>
-                        </div>
+                    <div id='score'>
+                        <div>{round}</div>
+                        <Hexagon />
                     </div>
                 </header>
             )}
@@ -125,7 +115,7 @@ export default () => {
                     }}>Start game</div>
                 </div>
             </div>}
-            {showEndOfGame && (<div id='overlay overlay--endGame'>
+            {showEndOfGame && (<div className='overlay overlay--endGame'>
                 <div id='title'>Game Over</div>
                 <p>Your score was:</p>
                 <div id='score'>{round}</div>
@@ -142,7 +132,7 @@ export default () => {
             <div id='actions'>
                 <div className={cn('button', 'action', 'action--delete', { 'disabled': !inputWord?.length })} onClick={() => setInputWord(inputWord.slice(0, -1))}>Delete</div>
                 <div className={cn('button', 'action', 'action--shuffle')} onClick={() => shuffleLetters()}>Shuffle</div>
-                {!!skips && <div className={cn('button', 'action', 'action--skip')} onClick={() => skip()}>Skip</div>}
+                {!!skips && <div className={cn('button', 'action', 'action--skip')} onClick={() => skip()}>Skip • {skips}</div>}
                 {!skips && <div className={cn('button', 'action', 'action--skip')} onClick={() => end()}>End</div>}
                 <div className={cn('button', 'action', 'action--enter', { 'disabled': selectedLetters.length < 7 })} onClick={() => checkWord()}>Enter</div>
             </div>
@@ -162,8 +152,10 @@ const Letter = ({ letter, onClick, selectedLetters }) => (
         <div className="letter">
             <span>{letter}</span>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 225 194.9" style={{ enableBackground: "new 0 0 225 194.9" }}>
-            <path d="M168.8 0H56.2L0 97.4l56.2 97.5h112.6L225 97.4z" />
-        </svg>
+        <Hexagon />
     </div >
 )
+
+const Hexagon = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 225 194.9" style={{ enableBackground: "new 0 0 225 194.9" }}>
+    <path d="M168.8 0H56.2L0 97.4l56.2 97.5h112.6L225 97.4z" />
+</svg>)
