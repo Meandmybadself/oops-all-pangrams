@@ -13,6 +13,11 @@ https://twitter.com/meandmybadself/status/1437758991283724294
 4. Dedupe.
 5. Save somewhere.
 
+## Word Checking
+Checks to see if word exists in word list.  Can do this because we have an input locked to 7 letters.
+
 ## TODOs
-* Instructions
-* UI update
+* Auto-shuffle
+* Dark mode
+* Show last missed word
+* Show all words on score screen
