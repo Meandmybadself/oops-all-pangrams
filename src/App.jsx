@@ -64,6 +64,7 @@ export default () => {
         setSkips(3)
         setRound(0)
         setInputWord('')
+        setWord('')
     }
 
     const showMessage = (message, type, ttl = 3000) => {

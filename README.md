@@ -20,5 +20,5 @@ Checks to see if word exists in word list.  Can do this because we have an input
 * Auto-shuffle
 * ~Dark mode~
 * Show last missed word
-* Show all words on score screen
+* Show all words on score screen / game screen
 * ~Persistence of game (so it doesn't get lost)~
