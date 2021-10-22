@@ -18,6 +18,7 @@ Checks to see if word exists in word list.  Can do this because we have an input
 
 ## TODOs
 * Auto-shuffle
-* Dark mode
+* ~Dark mode~
 * Show last missed word
 * Show all words on score screen
+* ~Persistence of game (so it doesn't get lost)~

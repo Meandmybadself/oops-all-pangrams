@@ -1,21 +1,22 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import words from './words';
-import { shuffle, uniq } from 'lodash'
+import shuffle from 'lodash/shuffle'
+import uniq from 'lodash/uniq'
 import cn from 'classnames';
-import Cookies from 'js-cookie';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 export default () => {
-    const [inputWord, setInputWord] = useState('');
-    const [round, setRound] = useState(0);
-    const [word, setWord] = useState('');
-    const [shuffledWords, setShuffledWords] = useState([]);
-    const [randomWordLetters, setRandomWordLetters] = useState([]);
-    const [skips, setSkips] = useState(3);
-    const [message, setMessage] = useState();
-    const [messageType, setMessageType] = useState();
-    const [selectedLetters, setSelectedLetters] = useState([]);
-    const [showEndOfGame, setShowEndOfGame] = useState(false);
-    const [showInstructions, setShowInstructions] = useState(!Cookies.get('instructions'));
+    const [inputWord, setInputWord] = useLocalStorage('inputWord', '')
+    const [round, setRound] = useLocalStorage('round', 0)
+    const [word, setWord] = useLocalStorage('word', '') //useState('');
+    const [shuffledWords, setShuffledWords] = useState([]); // Don't want this locally.
+    const [randomWordLetters, setRandomWordLetters] = useLocalStorage('randomWordLetters', []) // Randomized version of the word
+    const [skips, setSkips] = useLocalStorage('skips', 3); // Number of skips left
+    const [message, setMessage] = useState(); // Message to display in label above word
+    const [messageType, setMessageType] = useState(); // Type of message to display in label above word
+    const [selectedLetters, setSelectedLetters] = useLocalStorage('selectedLetters', [])// Letters selected by user
+    const [showEndOfGame, setShowEndOfGame] = useLocalStorage('showEndOfGame', false)// Show end of game screen
+    const [showInstructions, setShowInstructions] = useLocalStorage('instructions', false) // useState(!Cookies.get('instructions')); 
 
     const shuffleLetters = useCallback(() => {
         setRandomWordLetters(shuffle(uniq(word.split(''))))
@@ -25,6 +26,7 @@ export default () => {
         showMessage(word.toUpperCase(), 'red')
         setSkips(skips - 1)
         setInputWord('')
+        setWord('')
     }, [skips, word])
 
     useEffect(() => {
@@ -42,6 +44,7 @@ export default () => {
         if (correct) {
             setRound(round + 1)
             setInputWord('')
+            setWord('')
             showMessage('Pangram!', 'blue')
         } else {
             showMessage('Not in word list.')
@@ -73,7 +76,7 @@ export default () => {
     }
 
     useEffect(() => {
-        if (shuffledWords?.length) {
+        if (shuffledWords?.length && !word) {
             const randomWord = shuffledWords.pop()
             setShuffledWords(shuffledWords)
             setWord(randomWord);
@@ -110,7 +113,6 @@ export default () => {
                     <p>If you can't guess, tap <b>Skip</b>.</p>
                     <p>After three Skips, the game is over.</p>
                     <div className={'button'} onClick={() => {
-                        Cookies.set('instructions', 'true')
                         setShowInstructions(false)
                     }}>Start game</div>
                 </div>
